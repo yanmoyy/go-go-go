@@ -1,6 +1,8 @@
 package handlers
 
-import "github.com/yanmoyy/go-go-go/internal/database"
+import (
+	"github.com/yanmoyy/go-go-go/internal/database"
+)
 
 type handler struct {
 	db *database.Queries

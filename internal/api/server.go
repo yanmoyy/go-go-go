@@ -10,7 +10,8 @@ import (
 )
 
 const (
-	endPointUsers = "/api/users"
+	endPointUsers   = "/api/users"
+	endPointHealthz = "/healthz"
 )
 
 type Server struct {
@@ -37,6 +38,7 @@ func (s *Server) Start() error {
 }
 
 func (s *Server) setupRoutes(mux *http.ServeMux) {
+	router := newRouter(mux)
 	handler := handlers.NewHandler(s.db)
-	mux.HandleFunc("POST "+endPointUsers, handler.CreateUser)
+	router.Get(endPointHealthz, handler.Readiness)
 }
