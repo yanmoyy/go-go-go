@@ -1,0 +1,305 @@
+/* app/styles.css */
+
+/* Base Styles */
+:root {
+  --primary-color: #2c3e50;
+  --primary-hover: #34495e;
+  --background-color: #f5f5f5;
+  --board-color: #deb887;
+  --text-color: #333;
+  --border-color: #ddd;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Navigation */
+.nav-bar {
+  background: var(--primary-color);
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-bar h1 {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+/* Auth Forms */
+.auth-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tab-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  color: var(--text-color);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active {
+  border-bottom-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.auth-form {
+  display: none;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.auth-form.active {
+  display: block;
+}
+
+/* Game Board */
+.game-board {
+  display: grid;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.board-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.go-board {
+  display: grid;
+  grid-template-columns: repeat(19, 1fr);
+  gap: 2px;
+  background: var(--board-color);
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.intersection {
+  aspect-ratio: 1;
+  background: transparent;
+  border: 1px solid #000;
+  cursor: pointer;
+  position: relative;
+}
+
+.intersection:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.intersection::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #000;
+  transform: translateY(-50%);
+}
+
+.intersection::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #000;
+  transform: translateX(-50%);
+}
+
+/* Room List */
+.room-list {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.room-item {
+  background: white;
+  padding: 1rem;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.room-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Game Info */
+.game-info {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.game-info h3 {
+  margin-bottom: 1rem;
+}
+
+/* Utility Classes */
+.button-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.input-area {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.input-area:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  background: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background: var(--primary-hover);
+}
+
+/* Game Controls */
+.game-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .go-board {
+    grid-template-columns: repeat(13, 1fr);
+  }
+
+  .nav-bar h1 {
+    font-size: 1.2rem;
+  }
+
+  .subtitle {
+    display: none;
+  }
+
+  .button-container {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+/* Game States */
+.stone-black {
+  background: #000;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.stone-white {
+  background: #fff;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Loading States */
+.htmx-request {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Error States */
+.error-message {
+  color: #dc3545;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Success States */
+.success-message {
+  color: #28a745;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}

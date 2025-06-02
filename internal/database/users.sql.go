@@ -9,14 +9,57 @@ import (
 	"context"
 )
 
-const createUser = `-- name: CreateUser :exec
+const createUser = `-- name: CreateUser :one
 INSERT INTO
-  users (id, created_at, updated_at, name)
+  users (
+    id,
+    created_at,
+    updated_at,
+    username,
+    hashed_password
+  )
 VALUES
-  (gen_random_uuid (), now(), now(), $1)
+  (gen_random_uuid (), now(), now(), $1, $2)
+RETURNING
+  id, created_at, updated_at, username, hashed_password
 `
 
-func (q *Queries) CreateUser(ctx context.Context, name string) error {
-	_, err := q.db.ExecContext(ctx, createUser, name)
-	return err
+type CreateUserParams struct {
+	Username       string
+	HashedPassword string
+}
+
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
+	row := q.db.QueryRowContext(ctx, createUser, arg.Username, arg.HashedPassword)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Username,
+		&i.HashedPassword,
+	)
+	return i, err
+}
+
+const getUserByUsername = `-- name: GetUserByUsername :one
+SELECT
+  id, created_at, updated_at, username, hashed_password
+FROM
+  users
+WHERE
+  username = $1
+`
+
+func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUserByUsername, username)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Username,
+		&i.HashedPassword,
+	)
+	return i, err
 }

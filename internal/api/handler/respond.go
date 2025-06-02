@@ -1,4 +1,4 @@
-package handlers
+package handler
 
 import (
 	"encoding/json"
@@ -34,4 +34,8 @@ func respondWithJSON(w http.ResponseWriter, code int, payload any) {
 	if err != nil {
 		log.Printf("Error Write: %v", err)
 	}
+}
+
+func respondWithParameterError(w http.ResponseWriter, logErr error) {
+	respondWithError(w, http.StatusInternalServerError, "Couldn't decode parameters", logErr)
 }
