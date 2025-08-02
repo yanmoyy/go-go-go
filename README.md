@@ -31,7 +31,7 @@ A full-stack multiplayer [Alkkagi (Stone-Shooting)](https://en.wikipedia.org/wik
 
 <img src="./docs/images/selectMenu.gif" alt="Game Screenshot" width="600">
 
-1. **Match**: Wait for another player to join your session. when both players are ready, the game starts automatically.
+2. **Match**: Wait for another player to join your session. when both players are ready, the game starts automatically.
 
 <img src="./docs/images/multi.gif" alt="Game Screenshot" width="600">
 
