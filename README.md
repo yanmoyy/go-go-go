@@ -70,7 +70,7 @@ A full-stack multiplayer [Alkkagi (Stone-Shooting)](https://en.wikipedia.org/wik
 
 ### Contributors
 - [@yanmoyy](https://github.com/yanmoyy)
-- [@Gutssssssssss](https://github.com/Gutssssssssss)
+- [@Gutssssssssss](https://github.com/Gutsssssssssss)
 
 ### License
 [MIT](./LICENSE)
