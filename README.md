@@ -1,4 +1,4 @@
-# Go-Go-Go: Real-time Multiplayer Strategy Game
+# Go-Go-Go
 
 A full-stack multiplayer [Alkkagi (Stone-Shooting)](https://en.wikipedia.org/wiki/Alkkagi) game built entirely in Go, featuring a `terminal user interface (TUI)`, `real-time WebSocket communication` and `game history recording`.
 
