@@ -2,105 +2,75 @@
 
 A full-stack multiplayer [Alkkagi (Stone-Shooting)](https://en.wikipedia.org/wiki/Alkkagi) game built entirely in Go, featuring a `terminal user interface (TUI)`, `real-time WebSocket communication` and `game history recording`.
 
-![Game Screenshot](img/mainPage.png)
+<img src="./docs/images/mainpage.png" alt="Game Screenshot" width="600">
+<img src="./docs/images/collision.gif" alt="Game Screenshot" width="600">
+
+## Table of Contents
+- [Project Overview](#project-overview)
+- [How to Play](#how-to-play)
+- [Core Components](#core-components)
 
 ## Project Overview
 ### 🖥️ **Terminal User Interface (TUI)**
 - **Modern TUI**: Built with [Bubble Tea](https://github.com/charmbracelet/bubbletea) framework for a gui-like experience in the terminal.
-- **Real-time Rendering**: Render game state and animations by using 
-- **Intuitive Controls**: Easy-to-use navigation and game controls
-- **Cross-platform**: Works on any terminal that supports ANSI colors
+- **Real-time Rendering**: Render game state and animations by using handling custom animation logic.
 
 ### 🌐 **Real-time Multiplayer**
-- **WebSocket Communication**: Instant game state synchronization between players
-- **Live Chat System**: In-game messaging for player interaction
-- **Session Management**: Automatic player matching and game session handling
-- **Event-driven Architecture**: Efficient real-time event broadcasting
+- **WebSocket Communication**: Instant game state synchronization by sending game events and animation by using [Gorilla WebSocket](https://github.com/gorilla/websocket).
+- **Live Message System**: In-game messaging for player interaction. Messages include chat and game events.
 
 ### 🎮 **Game Mechanics**
-- **Physics Engine**: Realistic stone collision and movement simulation
-- **Turn-based Strategy**: Strategic gameplay with alternating turns
-- **Win Conditions**: Eliminate opponent's stones to win
-- **Real-time Animations**: Visual feedback for all game actions
+- **Physics Engine**: Realistic stone collision and movement simulation with calculations for velocity and acceleration.
+- **Relative Positioning**: Stones are positioned in game board (100x100) with relative coordinates and rendered in user's current terminal window size.
 
-### �� **Data Persistence**
-- **Game History**: Automatic recording of all game sessions
-- **PostgreSQL Integration**: Reliable data storage with JSONB for flexible game records
-- **Replay System**: Store complete game state for analysis and replay
-- **Session Tracking**: Comprehensive logging of player actions and game events
+### 💾 **Recording History**
+- **Game Records**: Automatic recording of all game sessions with saving the event history. ([postgreSQL](https://www.postgresql.org))
 
-## 🏗️ Technical Architecture
+## How to Play
+1. **Start**: Select the start menu to match with another player. Use arrow keys or `H`, `J`, `K`, `L` keys to navigate. (see below for help)
 
-### **Backend (Server)**
-- **Go 1.24.4**: Modern Go with latest features
-- **Gorilla WebSocket**: Robust WebSocket implementation
-- **PostgreSQL**: Reliable data persistence with JSONB support
-- **Environment Configuration**: Secure configuration management
-- **Structured Logging**: Comprehensive logging with slog
+<img src="./docs/images/selectMenu.gif" alt="Game Screenshot" width="600">
 
-### **Frontend (Client)**
-- **Bubble Tea**: Elegant TUI framework for terminal applications
-- **Lip Gloss**: Beautiful styling and layout system
-- **Real-time Updates**: Live game state synchronization
-- **Error Handling**: Graceful error recovery and user feedback
+1. **Match**: Wait for another player to join your session. when both players are ready, the game starts automatically.
 
-### **Game Engine**
-- **Physics Simulation**: Realistic collision detection and movement
-- **Event System**: Comprehensive game event management
-- **State Management**: Immutable game state with event sourcing
-- **Multiplayer Sync**: Deterministic game state across clients
+<img src="./docs/images/multi.gif" alt="Game Screenshot" width="600">
 
-## 🚀 Getting Started
+3. **Game**: Use arrow keys or `H`, `J`, `K`, `L` keys to navigate and **control** your shoot. Press `I` to **chat** with other player. You can **resize** the window to see the game board and stones in more detail.
 
-### Prerequisites
-- Go 1.24.4 or later
-- PostgreSQL database
-- Terminal with ANSI color support
+4. **Win**: If one player has no more stones left, the game ends and exit with an announcement of the winner.
 
-### Installation
+### Previews
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yanmoyy/go-go-go.git
-   cd go-go-go
-   ```
+#### ***Shoot***
+<img src="./docs/images/manipulation.gif" alt="Game Screenshot" width="600">
 
-2. **Set up environment variables**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your database credentials
-   ```
+#### ***Chat*** 
+<img src="./docs/images/chatting.gif" alt="Game Screenshot" width="600" >
 
-3. **Run database migrations**
-   ```bash
-   psql -d your_database -f sql/schema/001_record.sql
-   ```
+#### ***Resize***
+<img src="./docs/images/resizing.gif" alt="Game Screenshot" width="600">
 
-4. **Start the server**
-   ```bash
-   go run cmd/server/main.go
-   ```
 
-5. **Start the client**
-   ```bash
-   go run cmd/client/main.go
-   ```
+## Core Components
 
-## �� How to Play
+>*We tried to build this project from scratch to understand basics of Go and how it can actually be used to build a real-world project. These are our main components of the project.*
 
-1. **Connect**: Launch the client and connect to the server
-2. **Match**: Wait for another player to join your session
-3. **Strategize**: Plan your shots to eliminate opponent stones
-4. **Shoot**: Use velocity controls to aim and shoot your stones
-5. **Win**: Be the last player with stones remaining on the board
+- ***`Logging`***: Using [Slog](https://pkg.go.dev/log/slog), a structured logger for Go to debug our application to understand the game flow and debug issues.
+- ***`Testing`***: We were fascinated by the Go's testing environment, which allows us to write more testable code and solve complex problems (like physics, UI rendering, etc.). We used [Require](https://pkg.go.dev/github.com/stretchr/testify/require) mostly for assertions.
+- ***`Websocket`***: Using [Gorilla WebSocket](https://github.com/gorilla/websocket) for real-time communication, (Mostly followed the documentation and examples) which eventually lead us to understand goroutines and channels.
+- ***`TUI`***: Using [Bubble Tea](https://github.com/charmbracelet/bubbletea) for a modern TUI framework Also used [Lipgloss](https://github.com/charmbracelet/lipgloss) for styling and [Bubbles](https://github.com/charmbracelet/bubbles) for UI components. We implemented our own custom UI layout components inspired by flutter widgets *(like Column, Row, FlexContainer)*.
+- ***`Responsive UI`***: We converted the game board to UI elements using relative coordinates and rendered in user's current terminal window size. *(Try zoom in and out to see the difference!)*
+- ***`Physics Simulation`***: Custom physics engine for realistic stone movement and collision detection. No external libraries used, just pure Go code. *(That's why we called this project "Go-Go-Go"!)*
 
-### Game Rules
-- Each player starts with 10 stones (White vs Black)
-- Take turns shooting stones across the 100x100 game board
-- Stones collide realistically with physics simulation
-- Stones that go out of bounds are eliminated
-- Last player with stones remaining wins
+### Future Plans
+- Single-player mode with AI opponent
+- User customization options (e.g., stone colors, board size)
+- Special stone types (e.g., stones with special abilities)
+- User Accounts and Authentication
 
 ### Contributors
 - [@yanmoyy](https://github.com/yanmoyy)
 - [@Gutssssssssss](https://github.com/Gutssssssssss)
+
+### License
+[MIT](./LICENSE)
